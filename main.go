@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"math/big"
+	"time"
 
+	"github.com/binance-chain/tss-lib/ecdsa/keygen"
 	"github.com/binance-chain/tss-lib/tss"
 )
 
@@ -35,5 +37,9 @@ func main() {
 	preParams, _ := keygen.GeneratePreParams(1 * time.Minute)
 
 	// TODO:
-	party := keygen.NewLocalParty(params, outCh, endCh, preParams)
+	outCh := make(chan tss.Message)
+	endCh := make(chan keygen.LocalPartySaveData)
+	// end chan<- LocalPartySaveData,
+	party := keygen.NewLocalParty(params, outCh, endCh, *preParams)
+	fmt.Println(party)
 }
